@@ -1,35 +1,29 @@
-
 /* 
 
 ? PATH '/api/login'
 */
 
-
 const { Router } = require("express");
-const {check} = require ('express-validator')
+const { check } = require("express-validator");
 
-const {} = require ('../controllers/auth.controller');
+const { renewToken } = require("../controllers/auth.controller");
 const { validarCampos } = require("../middlewares/validar-campos");
+const { validarJWT } = require("../middlewares/validar-jwt");
 const router = Router();
-const {
+const { loginUser } = require("../controllers/auth.controller");
 
-    loginUser
+router.post(
+  "/",
 
-} = require ("../controllers/auth.controller")
+  [
+    check("email", "EL email es obligatorio").not().isEmpty(),
+    check("password", "El password es obligatorio").not().isEmpty(),
+    validarCampos,
+  ],
 
+  loginUser
+);
 
+router.post("/renew", validarJWT, renewToken);
 
-router.post("/",
-  
-    [
-      check("email", "EL email es obligatorio").not().isEmpty(),
-      check("password", "El password es obligatorio").not().isEmpty(),
-    validarCampos
-    ],
-  
-    loginUser
-  );
-
-
-
-  module.exports = router
+module.exports = router;

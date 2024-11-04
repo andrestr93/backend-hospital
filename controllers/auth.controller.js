@@ -39,8 +39,6 @@ const loginUser = async (req, res = response) => {
       ok: true,
       msg: token,
     });
-
-    
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -50,6 +48,17 @@ const loginUser = async (req, res = response) => {
   }
 };
 
+const renewToken = async (req, res) => {
+  const uid = req.id;
+
+  const token = await generarJWT(uid);
+
+  res.json({
+    ok: true,
+    token,
+  });
+};
 module.exports = {
   loginUser,
+  renewToken,
 };

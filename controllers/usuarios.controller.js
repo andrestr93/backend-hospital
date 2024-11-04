@@ -6,11 +6,9 @@ const { generarJWT } = require("../helpers/jwt");
 const getUsuarios = async (req, res = express) => {
   const desde = Number(req.query.desde || 0);
 
- const [usuarios , total] =  await Promise.all([
-    Usuario.find({}, "nombre email role google img")
-    .skip(desde)
-    .limit(5),
-    Usuario.countDocuments()
+  const [usuarios, total] = await Promise.all([
+    Usuario.find({}, "nombre email role google img").skip(desde).limit(5),
+    Usuario.countDocuments(),
   ]);
 
   res.json({
@@ -72,8 +70,6 @@ const updateUser = async (req, res = response) => {
 
   try {
     const usuarioDB = await Usuario.findById(_id);
-
-    console.log(_id);
 
     if (!usuarioDB) {
       return res.status(404).json({
